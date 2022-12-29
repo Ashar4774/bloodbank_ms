@@ -1,0 +1,122 @@
+.bg-header{
+	background-color: #2c6cc2!important;
+	position: relative;
+}
+
+.logo{
+	height: 80px; width: 80px;
+}
+
+.nav-sec{
+    position: absolute;
+}
+
+a.nav-link-secondary {
+    font-size: 12px;
+}
+
+body h1{
+	color: rgba(206, 206, 206, 0.9)!important;
+}
+
+header nav h1 .logo-heading{
+	    color: rgba(206, 206, 206, 0.9)!important;
+    	font-size: 39px;
+}
+
+header nav li a{
+	color: rgba(206, 206, 206, 0.9)!important;
+}
+
+header nav li a:target,header nav li a:hover{
+	color: rgba(206, 206, 206, 0.9)!important;
+}
+
+.table{
+	background-color: #2a5389!important;
+}
+
+.table-bordered{
+	border:1px solid #3c4044!important;
+}
+
+.card-body{
+	background-color: #2a5389!important;
+}
+
+.rounded-circle{
+	border-color: #2a5389!important;
+}
+
+.card-image{
+	margin-top: -80px;
+}
+
+.card,.table-border{
+	    background-color: #3c4044!important;
+}
+
+.body-index{
+	    background-color: #1f3d65!important;
+}
+
+.form-group,.card-header{
+	color: #80bdff!important;
+}
+
+.form-group input, .form-group textarea, .form-group select{
+	    background-color: rgba(206, 206, 206, 0.9)!important;
+}
+
+.form-group input:target, .form-group textarea:target, .form-group input:target::after{
+	    background-color: white;
+}
+
+.img{
+	    width: 97px;
+}
+
+form{
+	   background-color: #2a5389;
+}
+
+.btn-primary:hover{
+	
+	background-color: #2c6cc2!important;
+	border-color: #2c6cc2!important;
+}
+
+
+td.w-25 {
+    width: 10px!important;
+    padding: 10px 0px 0px!important;
+}
+
+.table-bordered th{
+	color: #80bdff!important;
+}
+
+.table-bordered td, .table-bordered th {
+    border: 1px solid black!important;
+}
+
+input[type="file" i]{
+	background-color: rgba(206, 206, 206, 0.9)!important;
+}
+
+.text-danger {
+    color: #c04954!important;
+}
+
+.card-body-profile h4, .card-body-profile p{
+	
+	color: rgba(206, 206, 206, 0.9)!important;
+}
+
+.card-body .card-title{
+	color: #80bdff!important;
+}
+
+nav{
+	padding: 0 1rem!important;
+}
