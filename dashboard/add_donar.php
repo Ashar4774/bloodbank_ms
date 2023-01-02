@@ -33,11 +33,15 @@
                                         </div>
                                         <div class="card-body">
                                             <div class="form-row">
-                                                <div class="form-group col-md-6">
+                                                <div class="form-group col-md-4">
+                                                    <label for="donar_cnic">CNIC</label>
+                                                    <input type="text" class="form-control" id="donar_cnic" name="donar_cnic" placeholder="Name of donar">
+                                                </div>
+                                                <div class="form-group col-md-4">
                                                     <label for="donar_name">Name</label>
                                                     <input type="text" class="form-control" id="donar_name" name="donar_name" placeholder="Name of donar">
                                                 </div>
-                                                <div class="form-group col-md-6">
+                                                <div class="form-group col-md-4">
                                                     <label for="donar_phone_no">Phone #</label>
                                                     <input type="text" class="form-control" id="donar_phone_no" name="donar_phone_no" placeholder="Contact number of donar">
                                                 </div>

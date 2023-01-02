@@ -47,36 +47,19 @@ if (isset($_POST['login'])) {
 
 	$email = $_POST['email'];
 	$password = $_POST['password'];
-	$user_type = $_POST['user_type'];
 
-	if (empty($email) && empty($password) && empty($user_type)) {
+	if (empty($email) && empty($password)) {
 		header('location:../login.php');
 		exit;
 	} else {
-		$sql = "SELECT * FROM registration WHERE `email`='$email' AND `password`='$password' AND `user_type`='$user_type'";
+		$sql = "SELECT * FROM `users` WHERE `email`='$email' AND `password`='$password'";
 		$result = $conn->query($sql);
 		$row = $result->fetch_assoc();
-		if ($row == TRUE && $user_type == 'admin') {
-			$_SESSION['user_id'] = $row['user_id'];
-			$_SESSION['user_fname'] = $row['first_name'];
-			$_SESSION['user_lname'] = $row['last_name'];
-			$_SESSION['user_image'] = $row['user_image'];
+		if ($row == TRUE) {
+			$_SESSION['user_id'] = $row['id'];
+			$_SESSION['user_name'] = $row['name'];
 			$_SESSION['user_email'] = $row['email'];
 			$_SESSION['user_password'] = $row['password'];
-			$_SESSION['user_gender'] = $row['gender'];
-			$_SESSION['user_type'] = 'admin';
-			$_SESSION['admin'] = 'admin';
-			header('location:../admin/index.php');
-		} elseif ($row == TRUE && $user_type == 'user') {
-			$_SESSION['user_id'] = $row['user_id'];
-			$_SESSION['user_fname'] = $row['first_name'];
-			$_SESSION['user_lname'] = $row['last_name'];
-			$_SESSION['user_image'] = $row['user_image'];
-			$_SESSION['user_email'] = $row['email'];
-			$_SESSION['user_password'] = $row['password'];
-			$_SESSION['user_gender'] = $row['gender'];
-			$_SESSION['user_type'] = 'user';
-			$_SESSION['user'] = 'user';
 			header('location:../index.php');
 		} else {
 			$_SESSION['login_error'] = "Incorrect Username/Password!";
@@ -84,6 +67,12 @@ if (isset($_POST['login'])) {
 			header('location:../login.php');
 		}
 	}
+}
+
+// for logout
+if(isset($_GET['logout'])){
+	session_destroy();
+	header('location: ../login.php');
 }
 
 
@@ -148,31 +137,13 @@ if (isset($_POST['add_blood_detail_btn'])) {
 	$rh_system = $_POST['rh_system'];
 	$org_id = $_POST['org_id'];
 
-	$existed_sql = "SELECT * FROM `blood_types` WHERE abo_type = '$abo_type' AND rh_system = '$rh_system'";
-	$existed_result = $conn->query($existed_sql);
-	$existed_row = mysqli_fetch_assoc($existed_result);
-	$id = $existed_row['id'];
-	$count = mysqli_num_rows($existed_result);
-	if (mysqli_num_rows($existed_result) > 0) {
-		// print_r($count);
-		$count = $existed_row['count'] + 1;
-		$update_sql = "UPDATE `blood_types` SET count = $count WHERE id = $id";
-		// $update_result = $conn->query($update_sql);
-		if ($conn->query($update_sql) === TRUE) {
-			$_SESSION['blood_success'] = "Blood detail has been added successfully!";
-			header('location:../index_blood_detail.php');
-		} else {
-			echo "Error" . $sql . "<br>" . $conn->error;
-		}
+	//insert data into database
+	$sql = "INSERT INTO `blood_types`(abo_type, rh_system, org_id) VALUES ('" . $abo_type . "','" . $rh_system . "','" . $org_id . "')";
+	if ($conn->query($sql) === TRUE) {
+		$_SESSION['blood_success'] = "Blood detail has been added successfully!";
+		header('location:../index_blood_detail.php');
 	} else {
-		//insert data into database
-		$sql = "INSERT INTO `blood_types`(abo_type, rh_system, org_id, count) VALUES ('" . $abo_type . "','" . $rh_system . "','" . $org_id . "', 1)";
-		if ($conn->query($sql) === TRUE) {
-			$_SESSION['blood_success'] = "Blood detail has been added successfully!";
-			header('location:../index_blood_detail.php');
-		} else {
-			echo "Error" . $sql . "<br>" . $conn->error;
-		}
+		echo "Error" . $sql . "<br>" . $conn->error;
 	}
 }
 
@@ -183,11 +154,16 @@ if (isset($_POST['update_blood_detail_btn'])) {
 	$abo_type = $_POST['abo_type'];
 	$rh_system = $_POST['rh_system'];
 	$org_id = $_POST['org_id'];
+
 	// get record from db, and match if updated record is same or not, if no update the record
-	$query_exist = "SELECT * FROM `blood_types` WHERE `abo_type` = $abo_type AND `rh_system` = $rh_system AND `org_id` = $org_id";
-	$result_exist = $conn->query($query);
-	$row_exist = $result->fetch_row();
-	print_r($row_exist);
+	$update_sql = "UPDATE `blood_types` SET `abo_type` = '$abo_type', `rh_system` = '$rh_system', `org_id` = $org_id WHERE id = $blood_detail_id";
+	// $update_result = $conn->query($update_sql);
+	if ($conn->query($update_sql) === TRUE) {
+		$_SESSION['blood_update'] = "Blood detail has been updated successfully!";
+		header('location:../index_blood_detail.php');
+	} else {
+		echo "Error" . $sql . "<br>" . $conn->error;
+	}
 	// if( ($update_abo_type == $row_exist['abo_type']) && ($update_rh_system == $row_exist['rh_system']) && ($update_org == ))
 }
 
@@ -200,16 +176,12 @@ if (isset($_GET['dlt_blood_detail'])) {
 		$row = $result->fetch_assoc();
 		$id = $row['id'];
 		// print_r($row);
-		if ($row['count'] > 1) {
-			$count = $row['count'] - 1;
-			$update_sql = "UPDATE `blood_types` SET `count` = $count WHERE id = $id";
-			$update_result = $conn->query($update_sql);
-		} elseif ($row['count'] == 1) {
-			$dlt_sql = "DELETE FROM `blood_types` WHERE `id` = $id";
-			$dlt_result = $conn->query($dlt_sql);
-		}
+		$dlt_sql = "DELETE FROM `blood_types` WHERE `id` = $id";
+		$dlt_result = $conn->query($dlt_sql);
 		$_SESSION['blood_delete'] = "Blood detail has been deleted successfully!";
 		header('location:../index_blood_detail.php');
+	} else {
+		echo "Error" . $sql . "<br>" . $conn->error;
 	}
 }
 
@@ -225,33 +197,26 @@ if (isset($_POST['add_donar_detail_btn'])) {
 
 	$sql = "INSERT INTO `donars`(org_id , name, address, phone_no, abo_type, rh_system) VALUES ('" . $org_id . "', '" . $donar_name . "','" . $donar_address . "','" . $donar_phone_no . "','" . $abo_type . "','" . $rh_system . "')";
 	if ($conn->query($sql) === TRUE) {
-		$existed_sql = "SELECT * FROM `blood_types` WHERE abo_type = '$abo_type' AND rh_system = '$rh_system'";
-		$existed_result = $conn->query($existed_sql);
-		$existed_row = mysqli_fetch_assoc($existed_result);
-		$id = $existed_row['id'];
-		$count = mysqli_num_rows($existed_result);
-		if (mysqli_num_rows($existed_result) > 0) {
-			// print_r($count);
-			$count = $existed_row['count'] + 1;
-			$update_sql = "UPDATE `blood_types` SET count = $count WHERE id = $id";
-			// $update_result = $conn->query($update_sql);
-			if ($conn->query($update_sql) === TRUE) {
-				$_SESSION['blood_success'] = "Blood detail has been added successfully!";
-				// header('location:../index_blood_detail.php');
-			} else {
-				echo "Error" . $sql . "<br>" . $conn->error;
-			}
-		} else {
-			//insert data into database
-			$sql_blood = "INSERT INTO `blood_types`(abo_type, rh_system, org_id, count) VALUES ('" . $abo_type . "','" . $rh_system . "','" . $org_id . "', 1)";
-			if ($conn->query($sql_blood) === TRUE) {
-				$_SESSION['blood_success'] = "Blood detail has been added successfully!";
-				// header('location:../index_blood_detail.php');
-			} else {
-				echo "Error" . $sql . "<br>" . $conn->error;
-			}
-		}
 		$_SESSION['donar_success'] = "User detail has been added successfully!";
+		header('location:../index_donar.php');
+	} else {
+		echo "Error" . $sql . "<br>" . $conn->error;
+	}
+}
+
+// Update
+if (isset($_POST['edit_donar_submit'])) {
+	$donar_id = $_POST['donar_id'];
+	$donar_name = $_POST['donar_name'];
+	$donar_phone_no = $_POST['donar_phone_no'];
+	$donar_address = $_POST['donar_address'];
+	$abo_type = $_POST['abo_type'];
+	$rh_system = $_POST['rh_system'];
+	$org_id = $_POST['org_id'];
+
+	$sql = "UPDATE `donars` SET `name` = '$donar_name', `phone_no` = '$donar_phone_no', `address` = '$donar_address', `abo_type` = '$abo_type', `rh_system` = '$rh_system', `org_id` = $org_id WHERE id = $donar_id";
+	if ($conn->query($sql) === TRUE) {
+		$_SESSION['donar_update'] = "Donar detail has been updated successfully!";
 		header('location:../index_donar.php');
 	} else {
 		echo "Error" . $sql . "<br>" . $conn->error;
@@ -264,28 +229,9 @@ if (isset($_GET['dlt_donar'])) {
 	$query = "SELECT * FROM `donars` WHERE `id` = $dlt_donar";
 	$result = $conn->query($query);
 	if ($result == TRUE) {
-		$row = $result->fetch_assoc();
-		$id = $row['id'];
-		$abo_type = $row['abo_type'];
-		$rh_system = $row['rh_system'];
-		// print_r($row);
-		
-		$existed_sql = "SELECT * FROM `blood_types` WHERE abo_type = '$abo_type' AND rh_system = '$rh_system'";
-		$existed_result = $conn->query($existed_sql);
-		if ($existed_result == true) {
-			$existed_row = $existed_result->fetch_assoc();
-			if ($existed_row['count'] > 1) {
-				$count = $row['count'] - 1;
-				$update_sql = "UPDATE `blood_types` SET `count` = $count WHERE id = $id";
-				$update_result = $conn->query($update_sql);
-			} elseif ($existed_row['count'] == 1) {
-				$dlt_sql = "DELETE FROM `blood_types` WHERE `id` = $id";
-				$dlt_result = $conn->query($dlt_sql);
-			}
-			$dlt_sql = "DELETE FROM `donars` WHERE `id` = $dlt_donar";
-			$dlt_result = $conn->query($dlt_sql);
-			$_SESSION['blood_delete'] = "Blood detail has been deleted successfully!";
-			header('location:../index_blood_detail.php');
-		}
+		$dlt_sql = "DELETE FROM `donars` WHERE `id` = $dlt_donar";
+		$dlt_result = $conn->query($dlt_sql);
+		$_SESSION['donar_delete'] = "Donar detail has been deleted successfully!";
+		header('location:../index_donar.php');
 	}
 }

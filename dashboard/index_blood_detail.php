@@ -42,6 +42,12 @@ session_start();
                                                 echo '</div>';
                                                 unset($_SESSION['blood_success']);
                                             }
+                                            if (isset($_SESSION['blood_update'])) {
+                                                echo '<div class="alert alert-success mb-0" role="alert">';
+                                                echo    $_SESSION['blood_update'];
+                                                echo '</div>';
+                                                unset($_SESSION['blood_update']);
+                                            }
                                             if (isset($_SESSION['blood_delete'])) {
                                                 echo '<div class="alert alert-danger mb-0" role="alert">';
                                                 echo    $_SESSION['blood_delete'];
@@ -64,10 +70,10 @@ session_start();
                                                 <tbody>
                                                     <?php
                                                     include_once "./database/connection.php";
-                                                    $sql_blood = "SELECT * FROM `blood_types`";
+                                                    $sql_blood = "SELECT *, count(`org_id`) AS `count` FROM `blood_types` GROUP BY org_id, abo_type, rh_system ORDER BY id ASC";
                                                     $result_blood = $conn->query($sql_blood);
-
                                                     if (mysqli_num_rows($result_blood) > 0) {
+                                                        // $row_blood = $result_blood->fetch_assoc();
 
                                                         $count = 1;
                                                         while ($row = $result_blood->fetch_assoc()) {
@@ -84,11 +90,75 @@ session_start();
                                                                 <td class="align-middle">
                                                                     <?php echo $row['abo_type'] . '<sup>' . $row['rh_system'] . '</sup>'; ?>
                                                                 </td>
-                                                                <td><?php echo $row['count']; ?></td>
+                                                                <td><?php echo $row['count'] ?></td>
                                                                 <td>
-                                                                    <a href="./edit_blood_detail.php?edit_blood_detail=<?php echo $row['id']; ?>" class="btn btn-primary " onclick="return confirm('Delete this record?')">Edit</a>
-                                                                    <a href="./database/process.php?dlt_blood_detail=<?php echo $row['id']; ?>" class="btn btn-danger" onclick="return confirm('Delete this record?')" >Delete</a>
+                                                                    <a href="./edit_blood_detail.php?edit_blood_detail=<?php echo $row['id']; ?>" class="btn btn-primary " onclick="return confirm('Edit this record?')">Edit</a>
+                                                                    <a href="./database/process.php?dlt_blood_detail=<?php echo $row['id']; ?>" class="btn btn-danger" onclick="return confirm('Delete this record?')">Delete</a>
                                                                 </td>
+                                                            </tr>
+                                                        <?php }
+                                                    } else { ?>
+                                                        <tr>
+                                                            <td colspan="4">
+                                                                No data inserted yet
+                                                            </td>
+                                                        </tr>
+                                                    <?php } ?>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12 col-lg-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Blood group detail from donar</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped" id="table-1">
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            #
+                                                        </th>
+                                                        <th>CNIC</th>
+                                                        <th>Donar name</th>
+                                                        <th>Phone #</th>
+                                                        <th>Organization Name</th>
+                                                        <th>Blood type</th>
+                                                        <th>Qty</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    include_once "./database/connection.php";
+                                                    $sql_blood = "SELECT *, count(`name`) AS `count` FROM `donars` GROUP BY `cnic` ORDER BY id ASC";
+                                                    $result_blood = $conn->query($sql_blood);
+                                                    if (mysqli_num_rows($result_blood) > 0) {
+                                                        // $row_blood = $result_blood->fetch_assoc();
+
+                                                        $count = 1;
+                                                        while ($row = $result_blood->fetch_assoc()) {
+                                                            $org_id = $row['org_id'];
+                                                            $sql_org = "SELECT `name` FROM `organizations` WHERE `id` = $org_id";
+                                                            $result_org = $conn->query($sql_org);
+                                                            $row_org = $result_org->fetch_array();
+                                                    ?>
+                                                            <tr>
+                                                                <td>
+                                                                    <?php echo $count++; ?>
+                                                                </td>
+                                                                <td><?php echo $row['cnic']; ?></td>
+                                                                <td><?php echo $row['name']; ?></td>
+                                                                <td><?php echo $row['phone_no']; ?></td>
+                                                                <td><?php echo $row_org['name']; ?></td>
+                                                                <td class="align-middle">
+                                                                    <?php echo $row['abo_type'] . '<sup>' . $row['rh_system'] . '</sup>'; ?>
+                                                                </td>
+                                                                <td><?php echo $row['count'] ?></td>
                                                             </tr>
                                                         <?php }
                                                     } else { ?>

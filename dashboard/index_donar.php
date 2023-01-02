@@ -42,6 +42,12 @@ session_start();
                                                 echo '</div>';
                                                 unset($_SESSION['donar_success']);
                                             }
+                                            if (isset($_SESSION['donar_update'])) {
+                                                echo '<div class="alert alert-success mb-0" role="alert">';
+                                                echo    $_SESSION['donar_update'];
+                                                echo '</div>';
+                                                unset($_SESSION['donar_update']);
+                                            }
                                             if (isset($_SESSION['dlt_delete'])) {
                                                 echo '<div class="alert alert-danger mb-0" role="alert">';
                                                 echo    $_SESSION['dlt_delete'];
@@ -86,8 +92,8 @@ session_start();
                                                                 <td><?php echo $row_org['name']; ?></td>
                                                                 <td><?php echo $row['abo_type'] . '<sup>' . $row['rh_system'] . '</sup>'; ?></td>
                                                                 <td>
-                                                                    <a href="#" class="btn btn-primary">Edit</a>
-                                                                    <a href="./database/process.php?dlt_donar=<?php echo $row['id']; ?>" onclick="return confirm('Delete this record?')" class="btn btn-danger">Delete</a>
+                                                                <a href="./edit_donar.php?edit_donar=<?php echo $row['id']; ?>" class="btn btn-primary " onclick="return confirm('Edit this record?')">Edit</a>
+                                                                    <a href="./database/process.php?dlt_donar=<?php echo $row['id']; ?>" class="btn btn-danger" onclick="return confirm('Delete this record?')">Delete</a>
                                                                 </td>
                                                             </tr>
                                                         <?php }

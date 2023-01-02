@@ -38,7 +38,7 @@
                                             $row = $result->fetch_assoc();
                                         ?>
                                             <div class="card-header">
-                                                <h4>Add blood detail</h4>
+                                                <h4>Edit blood detail</h4>
                                             </div>
                                             <div class="card-body">
                                                 <div class="form-row">
