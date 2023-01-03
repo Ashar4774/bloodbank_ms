@@ -94,6 +94,24 @@ if (isset($_POST['add_org_btn'])) {
 	}
 }
 
+// Update
+if(isset($_POST['edit_org_btn'])){
+	$org_id = $_POST['org_id'];
+	$org_name = $_POST['org_name'];
+	$org_address = $_POST['org_address'];
+	$org_phone = $_POST['org_phone'];
+
+	// get record from db, and match if updated record is same or not, if no update the record
+	$update_sql = "UPDATE `organizations` SET `id` = '$org_id', `name` = '$org_name', `address` = $org_address, `phone_no` = '$org_phone' WHERE id = $org_id";
+	// $update_result = $conn->query($update_sql);
+	if ($conn->query($update_sql) === TRUE) {
+		$_SESSION['org_update'] = "Organization has been updated successfully!";
+		header('location:../index_organization.php');
+	} else {
+		echo "Error" . $sql . "<br>" . $conn->error;
+	}
+}
+
 // Delete
 if (isset($_GET['dlt_org'])) {
 	$dlt_org = $_GET['dlt_org'];
@@ -194,8 +212,9 @@ if (isset($_POST['add_donar_detail_btn'])) {
 	$abo_type = $_POST['abo_type'];
 	$rh_system = $_POST['rh_system'];
 	$org_id = $_POST['org_id'];
+	$donar_status = "approved";
 
-	$sql = "INSERT INTO `donars`(org_id , name, address, phone_no, abo_type, rh_system) VALUES ('" . $org_id . "', '" . $donar_name . "','" . $donar_address . "','" . $donar_phone_no . "','" . $abo_type . "','" . $rh_system . "')";
+	$sql = "INSERT INTO `donars`(org_id , name, address, phone_no, abo_type, rh_system, status) VALUES ('" . $org_id . "', '" . $donar_name . "','" . $donar_address . "','" . $donar_phone_no . "','" . $abo_type . "','" . $rh_system . "', '" . $donar_status . "')";
 	if ($conn->query($sql) === TRUE) {
 		$_SESSION['donar_success'] = "User detail has been added successfully!";
 		header('location:../index_donar.php');

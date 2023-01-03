@@ -42,6 +42,12 @@ session_start();
                                                 echo '</div>';
                                                 unset($_SESSION['org_success']);
                                             }
+                                            if (isset($_SESSION['org_update'])) {
+                                                echo '<div class="alert alert-danger mb-0" role="alert">';
+                                                echo    $_SESSION['org_update'];
+                                                echo '</div>';
+                                                unset($_SESSION['org_update']);
+                                            }
                                             if (isset($_SESSION['org_delete'])) {
                                                 echo '<div class="alert alert-danger mb-0" role="alert">';
                                                 echo    $_SESSION['org_delete'];
@@ -82,7 +88,7 @@ session_start();
                                                                 <?php echo $row['phone_no'] ?>
                                                             </td>
                                                             <td>
-                                                                <a href="#" class="btn btn-primary">Edit</a>
+                                                                <a href="./edit_organization.php?edit_org=<?php echo $row['id']; ?>" onclick="return confirm('Edit this record?')" class="btn btn-primary">Edit</a>
                                                                 <a href="./database/process.php?dlt_org=<?php echo $row['id']; ?>" onclick="return confirm('Delete this record?')" class="btn btn-danger">Delete</a>
                                                             </td>
                                                         </tr>

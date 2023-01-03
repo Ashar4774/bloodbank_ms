@@ -66,6 +66,7 @@ session_start();
                                                         <th>Phone No</th>
                                                         <th>Organization Name</th>
                                                         <th>Blood type</th>
+                                                        <th>Status</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
@@ -78,21 +79,31 @@ session_start();
                                                         $count = 1;
                                                         while ($row = $result_donar->fetch_assoc()) {
                                                             $org_id = $row['org_id'];
-                                                            $sql_org = "SELECT `name` FROM `organizations` WHERE `id` = $org_id";
-                                                            $result_org = $conn->query($sql_org);
-                                                            $row_org = $result_org->fetch_array();
+                                                            if ($org_id) {
+                                                                $sql_org = "SELECT `name` FROM `organizations` WHERE `id` = $org_id";
+                                                                $result_org = $conn->query($sql_org);
+                                                                $row_org = $result_org->fetch_array();
+                                                            }
                                                     ?>
                                                             <tr>
                                                                 <td>
                                                                     <?php echo $count++ ?>
                                                                 </td>
-                                                                <td><?php echo $row['name']; ?></td>
-                                                                <td><?php echo $row['address']; ?></td>
+                                                                <td class="text-capitalize"><?php echo $row['name']; ?></td>
+                                                                <td class="text-capitalize"><?php echo $row['address']; ?></td>
                                                                 <td><?php echo $row['phone_no']; ?></td>
-                                                                <td><?php echo $row_org['name']; ?></td>
+                                                                <td class="text-capitalize"><?php echo ($org_id) ? $row_org['name'] : 'N/A'; ?></td>
                                                                 <td><?php echo $row['abo_type'] . '<sup>' . $row['rh_system'] . '</sup>'; ?></td>
+                                                                <td class="text-capitalize status"><?php echo $row['status']; ?></td>
                                                                 <td>
-                                                                <a href="./edit_donar.php?edit_donar=<?php echo $row['id']; ?>" class="btn btn-primary " onclick="return confirm('Edit this record?')">Edit</a>
+                                                                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                        Status
+                                                                    </button>
+                                                                    <div class="dropdown-menu">
+                                                                        <a class="dropdown-item status_approve" href="#">Approved</a>
+                                                                        <a class="dropdown-item status_pending" href="#">Pending</a>
+                                                                    </div>
+                                                                    <a href="./edit_donar.php?edit_donar=<?php echo $row['id']; ?>" class="btn btn-primary " onclick="return confirm('Edit this record?')">Edit</a>
                                                                     <a href="./database/process.php?dlt_donar=<?php echo $row['id']; ?>" class="btn btn-danger" onclick="return confirm('Delete this record?')">Delete</a>
                                                                 </td>
                                                             </tr>
@@ -123,6 +134,12 @@ session_start();
     </div>
     <!-- Footerscript start -->
     <?php include('./includes/footer_script.php') ?>
+    <script>
+        $('.status_approve').on('click', function(e){
+            e.preventDefault();
+            
+        })
+    </script>
     <!-- Footerscript end -->
 </body>
 <!-- index.html  21 Nov 2019 03:47:04 GMT -->

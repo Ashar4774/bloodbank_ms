@@ -143,9 +143,11 @@ session_start();
                                                         $count = 1;
                                                         while ($row = $result_blood->fetch_assoc()) {
                                                             $org_id = $row['org_id'];
-                                                            $sql_org = "SELECT `name` FROM `organizations` WHERE `id` = $org_id";
-                                                            $result_org = $conn->query($sql_org);
-                                                            $row_org = $result_org->fetch_array();
+                                                            if ($org_id) {
+                                                                $sql_org = "SELECT `name` FROM `organizations` WHERE `id` = $org_id";
+                                                                $result_org = $conn->query($sql_org);
+                                                                $row_org = $result_org->fetch_array();
+                                                            }
                                                     ?>
                                                             <tr>
                                                                 <td>
@@ -154,7 +156,7 @@ session_start();
                                                                 <td><?php echo $row['cnic']; ?></td>
                                                                 <td><?php echo $row['name']; ?></td>
                                                                 <td><?php echo $row['phone_no']; ?></td>
-                                                                <td><?php echo $row_org['name']; ?></td>
+                                                                <td><?php echo (($org_id)) ? $row_org['name'] : 'Indivisual'; ?></td>
                                                                 <td class="align-middle">
                                                                     <?php echo $row['abo_type'] . '<sup>' . $row['rh_system'] . '</sup>'; ?>
                                                                 </td>
