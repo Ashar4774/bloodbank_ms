@@ -85,11 +85,14 @@ session_start();
                                                                 $row_org = $result_org->fetch_array();
                                                             }
                                                     ?>
-                                                            <tr>
+                                                            <tr class="tr_row">
                                                                 <td>
                                                                     <?php echo $count++ ?>
                                                                 </td>
-                                                                <td class="text-capitalize"><?php echo $row['name']; ?></td>
+                                                                <td class="text-capitalize">
+                                                                    <input type="hidden" class="donar_id" value="<?php echo $row['id']; ?>">
+                                                                    <?php echo $row['name']; ?>
+                                                                </td>
                                                                 <td class="text-capitalize"><?php echo $row['address']; ?></td>
                                                                 <td><?php echo $row['phone_no']; ?></td>
                                                                 <td class="text-capitalize"><?php echo ($org_id) ? $row_org['name'] : 'N/A'; ?></td>
@@ -100,8 +103,9 @@ session_start();
                                                                         Status
                                                                     </button>
                                                                     <div class="dropdown-menu">
-                                                                        <a class="dropdown-item status_approve" href="#">Approved</a>
-                                                                        <a class="dropdown-item status_pending" href="#">Pending</a>
+                                                                        <a class="dropdown-item donar_status_change" href="#">Approved</a>
+                                                                        <a class="dropdown-item donar_status_change" href="#">Cancel</a>
+                                                                        <a class="dropdown-item donar_status_change" href="#">Pending</a>
                                                                     </div>
                                                                     <a href="./edit_donar.php?edit_donar=<?php echo $row['id']; ?>" class="btn btn-primary " onclick="return confirm('Edit this record?')">Edit</a>
                                                                     <a href="./database/process.php?dlt_donar=<?php echo $row['id']; ?>" class="btn btn-danger" onclick="return confirm('Delete this record?')">Delete</a>
@@ -135,10 +139,29 @@ session_start();
     <!-- Footerscript start -->
     <?php include('./includes/footer_script.php') ?>
     <script>
-        $('.status_approve').on('click', function(e){
-            e.preventDefault();
-            
-        })
+        $(document).ready(function() {
+            $('.donar_status_change').on('click', function(e) {
+                e.preventDefault();
+                var donar_id = $(this).closest('.tr_row').find('.donar_id').val();
+                var donar_status_change = $(this).html();
+                $(this).closest('.status')
+                console.log(donar_id);
+                console.log(donar_status_change);
+                $.ajax({
+                    url: './database/process.php',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        'donar_id': donar_id,
+                        'donar_status_change': donar_status_change,
+                    },
+                    success: function(data) {
+                        // $(this).closest('.tr_row').find('.status').data(data['status']);
+                        location.reload();
+                    }
+                });
+            });
+        });
     </script>
     <!-- Footerscript end -->
 </body>
