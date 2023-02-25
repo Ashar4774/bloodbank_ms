@@ -70,7 +70,7 @@ if (isset($_POST['login'])) {
 }
 
 // for logout
-if(isset($_GET['logout'])){
+if (isset($_GET['logout'])) {
 	session_destroy();
 	header('location: ../login.php');
 }
@@ -95,7 +95,7 @@ if (isset($_POST['add_org_btn'])) {
 }
 
 // Update
-if(isset($_POST['edit_org_btn'])){
+if (isset($_POST['edit_org_btn'])) {
 	$org_id = $_POST['org_id'];
 	$org_name = $_POST['org_name'];
 	$org_address = $_POST['org_address'];
@@ -252,5 +252,43 @@ if (isset($_GET['dlt_donar'])) {
 		$dlt_result = $conn->query($dlt_sql);
 		$_SESSION['donar_delete'] = "Donar detail has been deleted successfully!";
 		header('location:../index_donar.php');
+	}
+}
+
+// update receiver's status
+if (isset($_POST['status_change'])) {
+	$receiver_id = $_POST['receiver_id'];
+	$status_change = $_POST['status_change'];
+	$query = "SELECT * FROM `receivers` WHERE `id` = $receiver_id";
+	$result = $conn->query($query);
+	$rows = mysqli_fetch_assoc($result);
+	if ($rows) {
+		$status = $rows['status'];
+		$update_query = "UPDATE `receivers` SET `status` = '$status_change' WHERE `id` = $receiver_id";
+		$update_result = $conn->query($update_query);
+
+		$query = "SELECT `status` FROM `receivers` WHERE `id` = $receiver_id";
+		$result = $conn->query($query);
+		$rows = mysqli_fetch_assoc($result);
+		print_r(json_encode($rows));
+	} else {
+		echo "Data not found";
+	}
+}
+
+// Update donar's status
+if (isset($_POST['donar_status_change'])) {
+	$donar_id = $_POST['donar_id'];
+	$donar_status_change = $_POST['donar_status_change'];
+	$query = "SELECT * FROM `donars` WHERE `id` = $donar_id";
+	$result = $conn->query($query);
+	$rows = mysqli_fetch_assoc($result);
+	if ($rows) {
+		$status = $rows['status'];
+		$update_query = "UPDATE `donars` SET `status` = '$donar_status_change' WHERE `id` = $donar_id";
+		$update_result = $conn->query($update_query);
+		print_r($update_result);
+	} else {
+		echo "Data not found";
 	}
 }
