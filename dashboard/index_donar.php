@@ -156,7 +156,6 @@ session_start();
                         'donar_status_change': donar_status_change,
                     },
                     success: function(data) {
-                        // $(this).closest('.tr_row').find('.status').data(data['status']);
                         location.reload();
                     }
                 });
