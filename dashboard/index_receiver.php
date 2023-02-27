@@ -133,6 +133,7 @@ session_start();
     <?php include('./includes/footer_script.php') ?>
     <script>
         $(document).ready(function() {
+            // receiver's status change
             $('.status_change').on('click', function(e) {
                 e.preventDefault();
                 var receiver_id = $(this).closest('.tr_row').find('.receiver_id').val();

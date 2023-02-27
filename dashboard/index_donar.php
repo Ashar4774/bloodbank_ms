@@ -140,6 +140,7 @@ session_start();
     <?php include('./includes/footer_script.php') ?>
     <script>
         $(document).ready(function() {
+            // donar status change
             $('.donar_status_change').on('click', function(e) {
                 e.preventDefault();
                 var donar_id = $(this).closest('.tr_row').find('.donar_id').val();
