@@ -92,6 +92,7 @@ include('./partials/html_header.php');
                                 </div> -->
                                 <div class="col-12">
                                     <button class="btn btn-primary w-100 py-3" type="submit" name="register">Register</button>
+                                    <p>Already have account? <a href="login.php">Login</a> </p>
                                 </div>
                             </div>
                         </form>

@@ -37,6 +37,35 @@ if (isset($_POST['register'])) {
 	}
 }
 
+// Login user
+//for login
+if (isset($_POST['login'])) {
+
+	$email = $_POST['email'];
+	$password = $_POST['password'];
+	$role = $_POST['role'];
+
+	if (empty($email) && empty($password)) {
+		header('location:../login.php');
+		exit;
+	} else {
+		$sql = "SELECT * FROM `users` WHERE `email`='$email' AND `password`='$password' AND `role`='$role'";
+		$result = $conn->query($sql);
+		$row = $result->fetch_assoc();
+		if ($row == TRUE) {
+			$_SESSION['user_id'] = $row['id'];
+			$_SESSION['user_name'] = $row['name'];
+			$_SESSION['user_email'] = $row['email'];
+			$_SESSION['user_password'] = $row['password'];
+			header('location:../../dashboard/index.php');
+		} else {
+			$_SESSION['login_error'] = "Incorrect Username/Password!";
+
+			header('location:../login.php');
+		}
+	}
+}
+
 // Request for blood receiving
 if (isset($_POST['request_submit'])) {
     $receiver_cnic = $_POST['receiver_cnic'];
