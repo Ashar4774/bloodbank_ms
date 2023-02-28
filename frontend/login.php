@@ -51,8 +51,8 @@ include('./partials/html_header.php');
                                 <div class="col-12 col-sm-12">
                                     <select class="form-select bg-white border-0" style="height: 55px;" name="role">
                                         <option selected disabled>Choose your role</option>
-                                        <option value="donar">Donar</option>
-                                        <option value="receiver">Receiver</option>
+                                        <option value="1">Donar</option>
+                                        <option value="2">Receiver</option>
                                     </select>
                                 </div>
                                 <div class="col-12">

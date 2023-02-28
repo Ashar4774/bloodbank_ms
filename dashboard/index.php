@@ -27,7 +27,14 @@ if (!isset($_SESSION['user_id'])) {
             <!-- Navbar end -->
 
             <!-- Sidebr start -->
-            <?php include('./includes/sidebar.php') ?>
+            <?php 
+            if(isset($_SESSION['role'])){
+                include('./includes/other_sidebar.php');
+            } else {
+                include('./includes/sidebar.php');
+
+            }
+            ?>
             <!-- Sidebr end -->
             <!-- Main Content -->
             <div class="main-content">

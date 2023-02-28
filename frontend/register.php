@@ -62,34 +62,10 @@ include('./partials/html_header.php');
                                 <div class="col-12 col-sm-12">
                                 <select class="form-select bg-white border-0" style="height: 55px;" name="role">
                                         <option selected disabled>Choose your role</option>
-                                        <option value="donar">Donar</option>
-                                        <option value="receiver">Receiver</option>
+                                        <option value="1">Donar</option>
+                                        <option value="2">Receiver</option>
                                     </select>
                                 </div>
-                                <!-- <div class="col-12 col-sm-6">
-                                    <input type="text" class="form-control bg-white border-0" name="receiver_bottle_qty" placeholder="Blood bottle qty" style="height: 55px;">
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <select class="form-select bg-white border-0" style="height: 55px;" name="receiver_abo_type">
-                                        <option selected>Choose ABO Type</option>
-                                        <option value="A">A</option>
-                                        <option value="B">B</option>
-                                        <option value="AB">AB</option>
-                                        <option value="O">O</option>
-                                    </select>
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <select class="form-select bg-white border-0" style="height: 55px;" name="receiver_rh_system">
-                                        <option selected>RH System</option>
-                                        <option value="+">+</option>
-                                        <option value="-">-</option>
-                                    </select>
-                                </div>
-                                <div class="col-12 col-sm-12">
-                                    <div class="" id="">
-                                        <input type="text" class="form-control bg-white border-0" name="receiver_address" placeholder="Address" style="height: 55px;">
-                                    </div>
-                                </div> -->
                                 <div class="col-12">
                                     <button class="btn btn-primary w-100 py-3" type="submit" name="register">Register</button>
                                     <p>Already have account? <a href="login.php">Login</a> </p>
