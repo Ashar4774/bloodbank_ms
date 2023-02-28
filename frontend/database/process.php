@@ -4,6 +4,39 @@ session_start();
 //connection with DB
 include "connection.php";
 
+// Register user
+if (isset($_POST['register'])) {
+	$name = $_POST['name'];
+	$email = $_POST['email'];
+	$cnic = $_POST['cnic'];
+	$password = $_POST['password'];
+	$cpassword = $_POST['c_password'];
+	$gender = $_POST['gender'];
+	$role = $_POST['role'];
+	//password matched or not
+	if ($password != $cpassword) {
+		$_SESSION['password_warning'] = "Password do not match!";
+		header('location:../registration.php');
+	} else {
+		//check duplication of email
+		$duplicate = "SELECT * FROM registration WHERE `email`='$email'";
+		$check = $conn->query($duplicate);
+		if ($check->fetch_assoc() == TRUE) {
+			$_SESSION['duplicate'] = "Email already exist!";
+			header('location:../registration.php');
+		} else {
+			//query for inserting data in registration table
+			$sql = "INSERT INTO `registration`(name,email,cnic,password,role) VALUES ('" . $name . "','" . $email . "','" . $cnic . "','" . $password . "','" . $role . "')";
+			if ($conn->query($sql) == TRUE) {
+				$_SESSION['signup'] = "User has been registered successfully!";
+				header('location:../registration.php');
+			} else {
+				echo "Error" . $sql . "<br>" . $conn->error;
+			}
+		}
+	}
+}
+
 // Request for blood receiving
 if (isset($_POST['request_submit'])) {
     $receiver_cnic = $_POST['receiver_cnic'];
