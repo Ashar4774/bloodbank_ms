@@ -2,16 +2,16 @@
 //session start
 session_start();
 //connection with DB
-include "connection.php";
+include "../../dashboard/database/connection.php";
 
 // Register user
 if (isset($_POST['register'])) {
 	$name = $_POST['name'];
 	$email = $_POST['email'];
 	$cnic = $_POST['cnic'];
+	$phone_no = $_POST['phone_no'];
 	$password = $_POST['password'];
 	$cpassword = $_POST['c_password'];
-	$gender = $_POST['gender'];
 	$role = $_POST['role'];
 	//password matched or not
 	if ($password != $cpassword) {
@@ -26,7 +26,7 @@ if (isset($_POST['register'])) {
 			header('location:../registration.php');
 		} else {
 			//query for inserting data in registration table
-			$sql = "INSERT INTO `registration`(name,email,cnic,password,role) VALUES ('" . $name . "','" . $email . "','" . $cnic . "','" . $password . "','" . $role . "')";
+			$sql = "INSERT INTO `registration`(name,email,cnic,phone_no,password,role) VALUES ('" . $name . "','" . $email . "','" . $cnic . "','" . $phone_no . "','" . $password . "'," . $role . ")";
 			if ($conn->query($sql) == TRUE) {
 				$_SESSION['signup'] = "User has been registered successfully!";
 				header('location:../registration.php');
@@ -49,14 +49,14 @@ if (isset($_POST['login'])) {
 		header('location:../login.php');
 		exit;
 	} else {
-		$sql = "SELECT * FROM `users` WHERE `email`='$email' AND `password`='$password' AND `role`='$role'";
+		$sql = "SELECT * FROM `users` WHERE `email`='$email' AND `password`='$password' AND `role`=$role";
 		$result = $conn->query($sql);
 		$row = $result->fetch_assoc();
 		if ($row == TRUE) {
 			$_SESSION['user_id'] = $row['id'];
 			$_SESSION['user_name'] = $row['name'];
 			$_SESSION['user_email'] = $row['email'];
-			$_SESSION['user_password'] = $row['password'];
+			$_SESSION['role'] = $row['role'];
 			header('location:../../dashboard/index.php');
 		} else {
 			$_SESSION['login_error'] = "Incorrect Username/Password!";
