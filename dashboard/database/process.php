@@ -5,19 +5,13 @@ session_start();
 include "connection.php";
 //for User Registration
 if (isset($_POST['register'])) {
-	$fname = $_POST['fname'];
-	$lname = $_POST['lname'];
+	$name = $_POST['name'];
 	$email = $_POST['email'];
+	$cnic = $_POST['cnic'];
 	$password = $_POST['password'];
 	$cpassword = $_POST['cpassword'];
 	$gender = $_POST['gender'];
-	$user_type = $_POST['user_type'];
-	//for img value
-	$img = $_FILES['image'];
-	$img_name = $img['name'];
-	$img_temp = $img['tmp_name'];
-	$folder = '../images/users/' . $img_name;
-	move_uploaded_file($img_temp, $folder);
+	$role = $_POST['role'];
 	//password matched or not
 	if ($password != $cpassword) {
 		$_SESSION['password_warning'] = "Password do not match!";
@@ -31,7 +25,7 @@ if (isset($_POST['register'])) {
 			header('location:../registration.php');
 		} else {
 			//query for inserting data in registration table
-			$sql = "INSERT INTO `registration`(user_image,first_name,last_name,email,password,gender,user_type) VALUES ('" . $img_name . "','" . $fname . "','" . $lname . "','" . $email . "','" . $password . "','" . $gender . "','" . $user_type . "')";
+			$sql = "INSERT INTO `registration`(name,email,cnic,password,role) VALUES ('" . $name . "','" . $email . "','" . $cnic . "','" . $password . "','" . $role . "')";
 			if ($conn->query($sql) == TRUE) {
 				$_SESSION['signup'] = "User has been registered successfully!";
 				header('location:../registration.php');

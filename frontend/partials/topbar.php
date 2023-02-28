@@ -25,6 +25,9 @@
                         <a class="text-body ps-2" href="">
                             <i class="fab fa-youtube"></i>
                         </a>
+                        <a class="text-body ps-2" href="register.php">
+                            Register
+                        </a>
                     </div>
                 </div>
             </div>
