@@ -23,21 +23,27 @@ include('./partials/html_header.php');
         <div class="container">
             <div class="row gx-5">
                 <div class="col-lg-6 mx-auto">
+                    <?php
+                    if (isset($_SESSION['user_success'])) {
+                        echo '<div class="alert alert-success mb-0" role="alert">';
+                        echo    $_SESSION['user_success'];
+                        echo '</div>';
+                        unset($_SESSION['user_success']);
+                    }
+                    if (isset($_SESSION['redceiver_error'])) {
+                        echo '<div class="alert alert-danger mb-0" role="alert">';
+                        echo    $_SESSION['redceiver_error'];
+                        echo '</div>';
+                        unset($_SESSION['redceiver_error']);
+                    }
+                    if (isset($_SESSION['password_warning'])) {
+                        echo '<div class="alert alert-danger mb-0" role="alert">';
+                        echo    $_SESSION['password_warning'];
+                        echo '</div>';
+                        unset($_SESSION['password_warning']);
+                    }
+                    ?>
                     <div class="bg-light text-center rounded p-5">
-                        <?php
-                        if (isset($_SESSION['receiver_request'])) {
-                            echo '<div class="alert alert-success mb-0" role="alert">';
-                            echo    $_SESSION['receiver_request'];
-                            echo '</div>';
-                            unset($_SESSION['receiver_request']);
-                        }
-                        if (isset($_SESSION['redceiver_error'])) {
-                            echo '<div class="alert alert-danger mb-0" role="alert">';
-                            echo    $_SESSION['redceiver_error'];
-                            echo '</div>';
-                            unset($_SESSION['redceiver_error']);
-                        }
-                        ?>
                         <h1 class="mb-4">Register Yourself and keep your record save for future</h1>
                         <form method="POST" action="./database/process.php">
                             <div class="row g-3">
@@ -51,7 +57,7 @@ include('./partials/html_header.php');
                                     <input type="password" class="form-control bg-white border-0" name="password" placeholder="Password" style="height: 55px;">
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <input type="password" class="form-control bg-white border-0" name="c_Password" placeholder="Confirm Password" style="height: 55px;">
+                                    <input type="password" class="form-control bg-white border-0" name="c_password" placeholder="Confirm Password" style="height: 55px;">
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <input type="text" class="form-control bg-white border-0" name="cnic" placeholder="CNIC" pattern="[0-9]{5}-[0-9]{7}-{0-9}{1}" style="height: 55px;">
@@ -60,14 +66,14 @@ include('./partials/html_header.php');
                                     <input type="text" class="form-control bg-white border-0" name="phone_no" placeholder="Phone No" style="height: 55px;">
                                 </div>
                                 <div class="col-12 col-sm-12">
-                                <select class="form-select bg-white border-0" style="height: 55px;" name="role">
+                                    <select class="form-select bg-white border-0" style="height: 55px;" name="role">
                                         <option selected disabled>Choose your role</option>
                                         <option value="1">Donar</option>
                                         <option value="2">Receiver</option>
                                     </select>
                                 </div>
                                 <div class="col-12">
-                                    <button class="btn btn-primary w-100 py-3" type="submit" name="register">Register</button>
+                                    <button type="submit" class="btn btn-primary w-100 py-3" name="register">Register</button>
                                     <p>Already have account? <a href="login.php">Login</a> </p>
                                 </div>
                             </div>

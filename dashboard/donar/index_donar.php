@@ -8,7 +8,7 @@ session_start();
 <!-- index.html  21 Nov 2019 03:44:50 GMT -->
 <!-- start head_html.php -->
 <?php 
-include('./includes/head_html.php'); 
+include('../includes/head_html.php'); 
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['unauth'] = "You have to login first!";
     header('location: login.php');
@@ -23,11 +23,18 @@ if (!isset($_SESSION['user_id'])) {
         <div class="main-wrapper main-wrapper-1">
             <div class="navbar-bg"></div>
             <!-- Navbar start -->
-            <?php include('./includes/navbar.php'); ?>
+            <?php include('../includes/navbar.php'); ?>
             <!-- Navbar end -->
 
             <!-- Sidebr start -->
-            <?php include('./includes/other_sidebar.php') ?>
+            <?php 
+            if(isset($_SESSION['role'])){
+                include('../includes/other_sidebar.php');
+            } else {
+                include('../includes/sidebar.php');
+
+            }
+            ?>
             <!-- Sidebr end -->
             <!-- Main Content -->
             <div class="main-content">
@@ -127,12 +134,12 @@ if (!isset($_SESSION['user_id'])) {
             </div>
 
             <!-- footer start -->
-            <?php include('./includes/footer.php') ?>
+            <?php include('../includes/footer.php') ?>
             <!-- footer end -->
         </div>
     </div>
     <!-- Footerscript start -->
-    <?php include('./includes/footer_script.php') ?>
+    <?php include('../includes/footer_script.php') ?>
     <!-- Footerscript end -->
 </body>
 

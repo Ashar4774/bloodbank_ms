@@ -16,20 +16,20 @@ if (isset($_POST['register'])) {
 	//password matched or not
 	if ($password != $cpassword) {
 		$_SESSION['password_warning'] = "Password do not match!";
-		header('location:../registration.php');
+		header('location:../register.php');
 	} else {
 		//check duplication of email
-		$duplicate = "SELECT * FROM registration WHERE `email`='$email'";
+		$duplicate = "SELECT * FROM `users` WHERE `email`='$email'";
 		$check = $conn->query($duplicate);
 		if ($check->fetch_assoc() == TRUE) {
 			$_SESSION['duplicate'] = "Email already exist!";
 			header('location:../registration.php');
 		} else {
 			//query for inserting data in registration table
-			$sql = "INSERT INTO `registration`(name,email,cnic,phone_no,password,role) VALUES ('" . $name . "','" . $email . "','" . $cnic . "','" . $phone_no . "','" . $password . "'," . $role . ")";
+			$sql = "INSERT INTO `users`(`name`,`email`,`cnic`,`phone_no`,`password`,`role`) VALUES ('" . $name . "','" . $email . "','" . $cnic . "','" . $phone_no . "','" . $password . "'," . $role . ")";
 			if ($conn->query($sql) == TRUE) {
-				$_SESSION['signup'] = "User has been registered successfully!";
-				header('location:../registration.php');
+				$_SESSION['user_success'] = "User has been registered successfully!";
+				header('location:../register.php');
 			} else {
 				echo "Error" . $sql . "<br>" . $conn->error;
 			}
