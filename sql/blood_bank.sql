@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 03, 2023 at 10:35 PM
+-- Generation Time: Mar 01, 2023 at 10:05 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -82,7 +82,7 @@ CREATE TABLE `donars` (
 INSERT INTO `donars` (`id`, `org_id`, `cnic`, `name`, `address`, `phone_no`, `abo_type`, `rh_system`, `status`) VALUES
 (3, 2, '37303-1234567-1', 'Donar1', 'Mirpur', '0333-1234567', 'AB', '+', 'approved'),
 (4, 2, '30301-1234567-3', 'Donar2', 'Mirpur', '0333-1234567', 'O', '+', 'approved'),
-(6, NULL, '37305-1234567-8', 'Unknown Donar', 'Mirpur', '0321-1234567', 'AB', '+', 'pending');
+(6, NULL, '37305-1234567-8', 'Unknown Donar', 'Mirpur', '0321-1234567', 'AB', '+', 'Approved');
 
 -- --------------------------------------------------------
 
@@ -128,7 +128,7 @@ CREATE TABLE `receivers` (
 --
 
 INSERT INTO `receivers` (`id`, `cnic`, `name`, `phone_no`, `address`, `abo_type`, `rh_system`, `bottle_qty`, `status`) VALUES
-(1, '37301-4747471-1', 'Receiver1', '0302-1234567', 'Mirpur', 'AB', '+', 2, 'pending');
+(1, '37301-4747471-1', 'Receiver1', '0302-1234567', 'Mirpur', 'AB', '+', 2, 'Approved');
 
 -- --------------------------------------------------------
 
@@ -140,6 +140,8 @@ CREATE TABLE `users` (
   `id` int(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `email` text NOT NULL,
+  `cnic` text DEFAULT NULL,
+  `phone_no` varchar(20) DEFAULT NULL,
   `password` text NOT NULL,
   `role` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -148,8 +150,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`) VALUES
-(1, 'admin', 'admin@gmail.com', 'admin123', NULL);
+INSERT INTO `users` (`id`, `name`, `email`, `cnic`, `phone_no`, `password`, `role`) VALUES
+(1, 'admin', 'admin@gmail.com', NULL, NULL, 'admin123', 0),
+(2, 'ashar muhammad', 'ashar.muhammad74@gmail.com', '37301-4736343-7', '+923341234567', 'Ashar123', 1);
 
 --
 -- Indexes for dumped tables
@@ -230,7 +233,7 @@ ALTER TABLE `receivers`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
