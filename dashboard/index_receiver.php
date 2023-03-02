@@ -8,7 +8,7 @@ session_start();
 <!-- index.html  21 Nov 2019 03:44:50 GMT -->
 <!-- start head_html.php -->
 <?php include('./includes/head_html.php');
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['user']['id'])) {
     $_SESSION['unauth'] = "You have to login first!";
     header('location: login.php');
     exit;

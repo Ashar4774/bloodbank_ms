@@ -41,19 +41,17 @@ if (isset($_POST['login'])) {
 
 	$email = $_POST['email'];
 	$password = $_POST['password'];
+	$role = 0;
 
 	if (empty($email) && empty($password)) {
 		header('location:../login.php');
 		exit;
 	} else {
-		$sql = "SELECT * FROM `users` WHERE `email`='$email' AND `password`='$password'";
+		$sql = "SELECT * FROM `users` WHERE `email`='$email' AND `password`='$password' AND `role`=$role";
 		$result = $conn->query($sql);
 		$row = $result->fetch_assoc();
 		if ($row == TRUE) {
-			$_SESSION['user_id'] = $row['id'];
-			$_SESSION['user_name'] = $row['name'];
-			$_SESSION['user_email'] = $row['email'];
-			$_SESSION['user_password'] = $row['password'];
+			$_SESSION['user'] = $row;
 			header('location:../index.php');
 		} else {
 			$_SESSION['login_error'] = "Incorrect Username/Password!";

@@ -2,7 +2,7 @@
 //session start
 session_start();
 //connection with DB
-include "../../dashboard/database/connection.php";
+include "connection.php";
 
 // Register user
 if (isset($_POST['register'])) {
@@ -23,7 +23,7 @@ if (isset($_POST['register'])) {
 		$check = $conn->query($duplicate);
 		if ($check->fetch_assoc() == TRUE) {
 			$_SESSION['duplicate'] = "Email already exist!";
-			header('location:../registration.php');
+			header('location:../register.php');
 		} else {
 			//query for inserting data in registration table
 			$sql = "INSERT INTO `users`(`name`,`email`,`cnic`,`phone_no`,`password`,`role`) VALUES ('" . $name . "','" . $email . "','" . $cnic . "','" . $phone_no . "','" . $password . "'," . $role . ")";
@@ -53,11 +53,11 @@ if (isset($_POST['login'])) {
 		$result = $conn->query($sql);
 		$row = $result->fetch_assoc();
 		if ($row == TRUE) {
-			$_SESSION['user_id'] = $row['id'];
-			$_SESSION['user_name'] = $row['name'];
-			$_SESSION['user_email'] = $row['email'];
-			$_SESSION['role'] = $row['role'];
-			header('location:../../dashboard/index.php');
+			$_SESSION['user'] = $row;
+			// $_SESSION['user_name'] = $row['name'];
+			// $_SESSION['user_email'] = $row['email'];
+			// $_SESSION['role'] = $row['role'];
+			header('location:../dashboard/index.php');
 		} else {
 			$_SESSION['login_error'] = "Incorrect Username/Password!";
 
