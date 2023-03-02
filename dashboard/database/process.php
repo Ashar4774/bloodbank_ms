@@ -204,7 +204,7 @@ if (isset($_POST['add_donar_detail_btn'])) {
 	$abo_type = $_POST['abo_type'];
 	$rh_system = $_POST['rh_system'];
 	$org_id = $_POST['org_id'];
-	$donar_status = "approved";
+	$donar_status = "Approved";
 
 	$sql = "INSERT INTO `donars`(org_id , name, address, phone_no, abo_type, rh_system, status) VALUES ('" . $org_id . "', '" . $donar_name . "','" . $donar_address . "','" . $donar_phone_no . "','" . $abo_type . "','" . $rh_system . "', '" . $donar_status . "')";
 	if ($conn->query($sql) === TRUE) {
