@@ -9,7 +9,7 @@ session_start();
 <!-- start head_html.php -->
 <?php 
 include('../includes/head_html.php'); 
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['user']['id'])) {
     $_SESSION['unauth'] = "You have to login first!";
     header('location: login.php');
     exit;

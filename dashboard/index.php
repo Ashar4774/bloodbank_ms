@@ -9,7 +9,7 @@ session_start();
 <!-- start head_html.php -->
 <?php 
 include('./includes/head_html.php'); 
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['user']['id'])) {
     $_SESSION['unauth'] = "You have to login first!";
     header('location: login.php');
     exit;
@@ -28,7 +28,7 @@ if (!isset($_SESSION['user_id'])) {
 
             <!-- Sidebr start -->
             <?php 
-            if(isset($_SESSION['role'])){
+            if(isset($_SESSION['user']['role'])){
                 include('./includes/other_sidebar.php');
             } else {
                 include('./includes/sidebar.php');
