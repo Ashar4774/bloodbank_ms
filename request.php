@@ -5,7 +5,7 @@
 <?php
 session_start();
 include('./partials/html_header.php');
- ?>
+?>
 <!-- end of html header -->
 
 <body>
@@ -33,7 +33,7 @@ include('./partials/html_header.php');
                 </div>
                 <div class="col-lg-6">
                     <div class="bg-light text-center rounded p-5">
-                        <?php 
+                        <?php
                         if (isset($_SESSION['receiver_request'])) {
                             echo '<div class="alert alert-success mb-0" role="alert">';
                             echo    $_SESSION['receiver_request'];
@@ -51,36 +51,37 @@ include('./partials/html_header.php');
                         <form method="POST" action="./database/process.php">
                             <div class="row g-3">
                                 <div class="col-12 col-sm-6">
-                                    <input type="text" class="form-control bg-white border-0" name="receiver_cnic" placeholder="CNIC" pattern="[0-9]{5}-[0-9]{7}-{0-9}{1}" style="height: 55px;">
+                                    <input type="text" class="form-control bg-white border-0" name="receiver_cnic" placeholder="CNIC" pattern="[0-9]{5}-[0-9]{7}-{0-9}{1}" style="height: 55px;" required>
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <input type="text" class="form-control bg-white border-0" name="receiver_name" placeholder="Your Name" style="height: 55px;">
+                                    <input type="text" class="form-control bg-white border-0" name="receiver_name" placeholder="Your Name" style="height: 55px;" required>
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <input type="text" class="form-control bg-white border-0" name="receiver_phone_no" placeholder="Phone No" style="height: 55px;">
+                                    <input type="text" class="form-control bg-white border-0" name="receiver_phone_no" placeholder="Phone No" style="height: 55px;" required>
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <input type="text" class="form-control bg-white border-0" name="receiver_bottle_qty" placeholder="Blood bottle qty" style="height: 55px;">
+                                    <input type="text" class="form-control bg-white border-0" name="receiver_bottle_qty" placeholder="Blood bottle qty" style="height: 55px;" required>
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <select class="form-select bg-white border-0" style="height: 55px;" name="receiver_abo_type">
-                                        <option selected>Choose ABO Type</option>
+                                    <select class="form-select bg-white border-0" style="height: 55px;" name="receiver_abo_type" required>
+                                        <option value="" selected>Choose ABO Type</option>
                                         <option value="A">A</option>
                                         <option value="B">B</option>
                                         <option value="AB">AB</option>
                                         <option value="O">O</option>
                                     </select>
+                                    <span class="check_avail d-none"><a href="#">check for availbility</a></span>
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <select class="form-select bg-white border-0" style="height: 55px;" name="receiver_rh_system">
-                                        <option selected>RH System</option>
+                                    <select class="form-select bg-white border-0" style="height: 55px;" name="receiver_rh_system" required>
+                                        <option value="" selected>RH System</option>
                                         <option value="+">+</option>
                                         <option value="-">-</option>
                                     </select>
                                 </div>
                                 <div class="col-12 col-sm-12">
-                                    <div class="" id="" >
-                                        <input type="text" class="form-control bg-white border-0" name="receiver_address" placeholder="Address" style="height: 55px;">
+                                    <div class="" id="">
+                                        <input type="text" class="form-control bg-white border-0" name="receiver_address" placeholder="Address" style="height: 55px;" required>
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -94,7 +95,7 @@ include('./partials/html_header.php');
             <div class="row gx-5 mt-5">
                 <div class="col-lg-6">
                     <div class="bg-light text-center rounded p-5">
-                        <?php 
+                        <?php
                         if (isset($_SESSION['donar_request'])) {
                             echo '<div class="alert alert-success mb-0" role="alert">';
                             echo    $_SESSION['donar_request'];
@@ -112,20 +113,20 @@ include('./partials/html_header.php');
                         <form method="POST" action="./database/process.php">
                             <div class="row g-3">
                                 <div class="col-12 col-sm-6">
-                                    <input type="text" class="form-control bg-white border-0" name="donar_cnic" placeholder="CNIC" pattern="[0-9]{5}-[0-9]{7}-{0-9}{1}" style="height: 55px;">
+                                    <input type="text" class="form-control bg-white border-0" name="donar_cnic" placeholder="CNIC" pattern="[0-9]{5}-[0-9]{7}-{0-9}{1}" style="height: 55px;" required>
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <input type="text" class="form-control bg-white border-0" name="donar_name" placeholder="Your Name" style="height: 55px;">
+                                    <input type="text" class="form-control bg-white border-0" name="donar_name" placeholder="Your Name" style="height: 55px;" required>
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <input type="text" class="form-control bg-white border-0" name="donar_phone_no" placeholder="Phone No" style="height: 55px;">
+                                    <input type="text" class="form-control bg-white border-0" name="donar_phone_no" placeholder="Phone No" style="height: 55px;" required>
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <input type="text" class="form-control bg-white border-0" name="donar_bottle_qty" placeholder="Blood bottle qty" style="height: 55px;">
+                                    <input type="text" class="form-control bg-white border-0" name="donar_bottle_qty" placeholder="Blood bottle qty" style="height: 55px;" required>
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <select class="form-select bg-white border-0" style="height: 55px;" name="donar_abo_type">
-                                        <option selected>Choose ABO Type</option>
+                                    <select class="form-select bg-white border-0" style="height: 55px;" name="donar_abo_type" required>
+                                        <option value="" selected>Choose ABO Type</option>
                                         <option value="A">A</option>
                                         <option value="B">B</option>
                                         <option value="AB">AB</option>
@@ -133,15 +134,15 @@ include('./partials/html_header.php');
                                     </select>
                                 </div>
                                 <div class="col-12 col-sm-6">
-                                    <select class="form-select bg-white border-0" style="height: 55px;" name="donar_rh_system">
-                                        <option selected>RH System</option>
+                                    <select class="form-select bg-white border-0" style="height: 55px;" name="donar_rh_system" required>
+                                        <option value="" selected>RH System</option>
                                         <option value="+">+</option>
                                         <option value="-">-</option>
                                     </select>
                                 </div>
                                 <div class="col-12 col-sm-12">
-                                    <div class="" id="" >
-                                        <input type="text" class="form-control bg-white border-0" name="donar_address" placeholder="Address" style="height: 55px;">
+                                    <div class="" id="">
+                                        <input type="text" class="form-control bg-white border-0" name="donar_address" placeholder="Address" style="height: 55px;" required>
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -177,6 +178,23 @@ include('./partials/html_header.php');
 
     <!-- JavaScript Libraries -->
     <?php include('./partials/script.php'); ?>
+    <script>
+        var receiver_bottle_qty;
+        var receiver_abo_type;
+        var receiver_rh_system;
+        $('input[name=receiver_bottle_qty], select[name=receiver_abo_type],select[name=receiver_rh_system]').on('change', function() {
+            receiver_bottle_qty = $('input[name=receiver_bottle_qty]').val();
+            receiver_abo_type = $('select[name=receiver_abo_type]').val();
+            receiver_rh_system = $('select[name=receiver_rh_system]').val();
+            if (receiver_bottle_qty != '' && receiver_abo_type != '' && receiver_rh_system != '') {
+                $('.check_avail').removeClass('d-none');
+                console.log('if');
+            } else {
+                $('.check_avail').addClass('d-none');
+                console.log('else');
+            }
+        });
+    </script>
 </body>
 
 </html>
