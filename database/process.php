@@ -6,64 +6,64 @@ include "connection.php";
 
 // Register user
 if (isset($_POST['register'])) {
-	$name = $_POST['name'];
-	$email = $_POST['email'];
-	$cnic = $_POST['cnic'];
-	$phone_no = $_POST['phone_no'];
-	$password = $_POST['password'];
-	$cpassword = $_POST['c_password'];
-	$role = $_POST['role'];
-	//password matched or not
-	if ($password != $cpassword) {
-		$_SESSION['password_warning'] = "Password do not match!";
-		header('location:../register.php');
-	} else {
-		//check duplication of email
-		$duplicate = "SELECT * FROM `users` WHERE `email`='$email'";
-		$check = $conn->query($duplicate);
-		if ($check->fetch_assoc() == TRUE) {
-			$_SESSION['duplicate'] = "Email already exist!";
-			header('location:../register.php');
-		} else {
-			//query for inserting data in registration table
-			$sql = "INSERT INTO `users`(`name`,`email`,`cnic`,`phone_no`,`password`,`role`) VALUES ('" . $name . "','" . $email . "','" . $cnic . "','" . $phone_no . "','" . $password . "'," . $role . ")";
-			if ($conn->query($sql) == TRUE) {
-				$_SESSION['user_success'] = "User has been registered successfully!";
-				header('location:../register.php');
-			} else {
-				echo "Error" . $sql . "<br>" . $conn->error;
-			}
-		}
-	}
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $cnic = $_POST['cnic'];
+    $phone_no = $_POST['phone_no'];
+    $password = $_POST['password'];
+    $cpassword = $_POST['c_password'];
+    $role = $_POST['role'];
+    //password matched or not
+    if ($password != $cpassword) {
+        $_SESSION['password_warning'] = "Password do not match!";
+        header('location:../register.php');
+    } else {
+        //check duplication of email
+        $duplicate = "SELECT * FROM `users` WHERE `email`='$email'";
+        $check = $conn->query($duplicate);
+        if ($check->fetch_assoc() == TRUE) {
+            $_SESSION['duplicate'] = "Email already exist!";
+            header('location:../register.php');
+        } else {
+            //query for inserting data in registration table
+            $sql = "INSERT INTO `users`(`name`,`email`,`cnic`,`phone_no`,`password`,`role`) VALUES ('" . $name . "','" . $email . "','" . $cnic . "','" . $phone_no . "','" . $password . "'," . $role . ")";
+            if ($conn->query($sql) == TRUE) {
+                $_SESSION['user_success'] = "User has been registered successfully!";
+                header('location:../register.php');
+            } else {
+                echo "Error" . $sql . "<br>" . $conn->error;
+            }
+        }
+    }
 }
 
 // Login user
 //for login
 if (isset($_POST['login'])) {
 
-	$email = $_POST['email'];
-	$password = $_POST['password'];
-	$role = $_POST['role'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $role = $_POST['role'];
 
-	if (empty($email) && empty($password)) {
-		header('location:../login.php');
-		exit;
-	} else {
-		$sql = "SELECT * FROM `users` WHERE `email`='$email' AND `password`='$password' AND `role`=$role";
-		$result = $conn->query($sql);
-		$row = $result->fetch_assoc();
-		if ($row == TRUE) {
-			$_SESSION['user'] = $row;
-			// $_SESSION['user_name'] = $row['name'];
-			// $_SESSION['user_email'] = $row['email'];
-			// $_SESSION['role'] = $row['role'];
-			header('location:../dashboard/index.php');
-		} else {
-			$_SESSION['login_error'] = "Incorrect Username/Password!";
+    if (empty($email) && empty($password)) {
+        header('location:../login.php');
+        exit;
+    } else {
+        $sql = "SELECT * FROM `users` WHERE `email`='$email' AND `password`='$password' AND `role`=$role";
+        $result = $conn->query($sql);
+        $row = $result->fetch_assoc();
+        if ($row == TRUE) {
+            $_SESSION['user'] = $row;
+            // $_SESSION['user_name'] = $row['name'];
+            // $_SESSION['user_email'] = $row['email'];
+            // $_SESSION['role'] = $row['role'];
+            header('location:../dashboard/index.php');
+        } else {
+            $_SESSION['login_error'] = "Incorrect Username/Password!";
 
-			header('location:../login.php');
-		}
-	}
+            header('location:../login.php');
+        }
+    }
 }
 
 // Request for blood receiving
@@ -126,5 +126,24 @@ if (isset($_POST['donar_submit'])) {
         $_SESSION['donar_error'] = "There is an error while sending your request, please check your form again";
         header('location:../request.php');
         // echo "Error" . $sql . "<br>" . $conn->error;
+    }
+}
+
+// check blood availbility
+if (isset($_POST['check_avail'])) {
+    $rows = [];
+    $receiver_rh_system = $_POST['receiver_rh_system'];
+    $receiver_abo_type = $_POST['receiver_abo_type'];
+    $query = "SELECT * FROM `donars` WHERE `rh_system` = '$receiver_rh_system' AND `abo_type` = '$receiver_abo_type' AND `status` = 'Approved'";
+    $result = $conn->query($query);
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $rows[] = $row;
+        }
+    }
+    if ($rows) {
+        print_r(json_encode($rows));
+    } else {
+        echo "Error" . $sql . "<br>" . $conn->error;
     }
 }

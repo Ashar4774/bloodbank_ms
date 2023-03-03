@@ -79,6 +79,11 @@ include('./partials/html_header.php');
                                         <option value="-">-</option>
                                     </select>
                                 </div>
+                                <div class="col-12 col-sm-12 div_avail d-none">
+                                    <select class="form-select bg-white border-0" style="height: 55px;" name="receiver_rh_system" required>
+                                        <option value="" selected>Available Users</option>
+                                    </select>
+                                </div>
                                 <div class="col-12 col-sm-12">
                                     <div class="" id="">
                                         <input type="text" class="form-control bg-white border-0" name="receiver_address" placeholder="Address" style="height: 55px;" required>
@@ -188,12 +193,29 @@ include('./partials/html_header.php');
             receiver_rh_system = $('select[name=receiver_rh_system]').val();
             if (receiver_bottle_qty != '' && receiver_abo_type != '' && receiver_rh_system != '') {
                 $('.check_avail').removeClass('d-none');
-                console.log('if');
             } else {
                 $('.check_avail').addClass('d-none');
-                console.log('else');
             }
         });
+
+        $('.check_avail').on('click', function(e){
+            e.preventDefault();
+            var div_avail = $('.div_avail').html();
+            var check_avail = $('.check_avail').html();
+            $.ajax({
+                url: './database/process.php',
+                type: 'POST',
+                dataType: 'JSON',
+                data: {
+                    'check_avail': check_avail,
+                    'receiver_rh_system': receiver_rh_system,
+                    'receiver_abo_type': receiver_abo_type,
+                },
+                success: function(data){
+                    console.log(data);
+                }
+            });
+        })
     </script>
 </body>
 

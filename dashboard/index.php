@@ -28,7 +28,7 @@ if (!isset($_SESSION['user']['id'])) {
 
             <!-- Sidebr start -->
             <?php 
-            if(isset($_SESSION['user']['role'])){
+            if(isset($_SESSION['user']['role']) && ($_SESSION['user']['role'] > 0)){
                 include('./includes/other_sidebar.php');
             } else {
                 include('./includes/sidebar.php');
