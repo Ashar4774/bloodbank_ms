@@ -16,6 +16,9 @@
                 <li class="dropdown">
                     <a href="./donar/index_donar.php" class="nav-link"><i data-feather="briefcase"></i><span class="text-capitalize">View donar</span></a>
                 </li>
+                <li class="dropdown">
+                    <a href="./donar/index_receiver.php" class="nav-link"><i data-feather="briefcase"></i><span class="text-capitalize">view receiver</span></a>
+                </li>
             <?php } elseif (isset($_SESSION['user']['role']) && ($_SESSION['user']['role'] == 2)) { ?>
                 <li class="dropdown">
                     <a href="./receiver/index_receiver.php" class="nav-link"><i data-feather="briefcase"></i><span class="text-capitalize">view receiver</span></a>
