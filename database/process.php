@@ -131,18 +131,35 @@ if (isset($_POST['donar_submit'])) {
 
 // check blood availbility
 if (isset($_POST['check_avail'])) {
-    $rows = [];
+    $donars = [];
+    $org = [];
+    $org_detail = [];
+    $data = [];
     $receiver_rh_system = $_POST['receiver_rh_system'];
     $receiver_abo_type = $_POST['receiver_abo_type'];
     $query = "SELECT * FROM `donars` WHERE `rh_system` = '$receiver_rh_system' AND `abo_type` = '$receiver_abo_type' AND `status` = 'Approved'";
     $result = $conn->query($query);
     if (mysqli_num_rows($result) > 0) {
         while ($row = $result->fetch_assoc()) {
-            $rows[] = $row;
+            $donars[] = $row;
         }
+        $data['donars'] = $donars;
     }
-    if ($rows) {
-        print_r(json_encode($rows));
+    $query_org = "SELECT *, count(`org_id`) AS `count` FROM `blood_types` WHERE `rh_system` = '$receiver_rh_system' AND `abo_type` = '$receiver_abo_type' GROUP BY `org_id`";
+    $result_org = $conn->query($query_org);
+    if (mysqli_num_rows($result_org) > 0) {
+        while ($row = $result_org->fetch_assoc()) {
+            $row_id =  $row['org_id'];
+            $query_detail = "SELECT `name` FROM `organizations` WHERE `id` = $row_id";
+            $result_detail = $conn->query($query_detail);
+            $org_detail[] = $result_org->fetch_assoc();
+            array_push($org, $org_detail);
+            // $org[] = $row;
+        }
+        $data['org'] = $org;
+    }
+    if ($data) {
+        print_r(json_encode($data));
     } else {
         echo "Error" . $sql . "<br>" . $conn->error;
     }

@@ -200,7 +200,10 @@ include('./partials/html_header.php');
 
         $('.check_avail').on('click', function(e){
             e.preventDefault();
-            var div_avail = $('.div_avail').html();
+            var div_avail = $('.div_avail');
+            var div_avail_child = $('.div_avail').children();
+            console.log(div_avail);
+            console.log(div_avail_child);
             var check_avail = $('.check_avail').html();
             $.ajax({
                 url: './database/process.php',
@@ -213,6 +216,17 @@ include('./partials/html_header.php');
                 },
                 success: function(data){
                     console.log(data);
+                    $(div_avail).removeClass('d-none');
+                    $(data['donars']).each(function(index, element){
+                        console.log(element);
+                        var option = `<option value=`+element['id']+`>`+element['name']+`)</option>`;
+                        $(div_avail_child).append(option);
+                    });
+                    $(data['org']).each(function(index, element){
+                        console.log(element);
+                        var option = `<option value=`+element['id']+`>`+element['name']+`(count: `+element['count']+`)</option>`;
+                        $(div_avail_child).append(option);
+                    });
                 }
             });
         })
