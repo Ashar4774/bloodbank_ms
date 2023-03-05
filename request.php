@@ -89,7 +89,7 @@ include('./partials/html_header.php');
                                     </select>
                                 </div>
                                 <div class="col-12 col-sm-12 div_avail d-none">
-                                    <select class="form-select bg-white border-0" style="height: 55px;" name="receiver_rh_system" required>
+                                    <select class="form-select bg-white border-0" style="height: 55px;" name="avail_user">
                                         <option value="" selected>Available Users</option>
                                     </select>
                                 </div>

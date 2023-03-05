@@ -76,6 +76,7 @@ if (isset($_POST['request_submit'])) {
     $receiver_rh_system = $_POST['receiver_rh_system'];
     $receiver_address = $_POST['receiver_address'];
     $receiver_bottle_qty = $_POST['receiver_bottle_qty'];
+    $avail_user = ($_POST['avail_user'] != '') ? $_POST['avail_user'] : '';
     $receiver_status = "pending";
 
     $sql = "INSERT INTO `receivers` (`cnic`, `name`, `phone_no`, `abo_type`, `rh_system`, `address`, `bottle_qty`, `status`) VALUES ('$receiver_cnic', '$receiver_name', '$receiver_phone_no', '$receiver_abo_type', '$receiver_rh_system', '$receiver_address', '$receiver_bottle_qty', '$receiver_status' )";

@@ -6,9 +6,9 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP; 
 use PHPMailer\PHPMailer\Exception; 
 
-require 'PHPMailer/Exception.php'; 
-require 'PHPMailer/PHPMailer.php'; 
-require 'PHPMailer/SMTP.php'; 
+require '../vendor/PHPMailer/src/Exception.php'; 
+require '../vendor/PHPMailer/src/PHPMailer.php'; 
+require '../vendor/PHPMailer/src/SMTP.php'; 
 
 $mail = new PHPMailer;
 
