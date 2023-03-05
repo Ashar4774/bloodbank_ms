@@ -3,7 +3,7 @@
 session_start();
 //connection with DB
 include "connection.php";
-
+include "phpMailer.php";
 // Register user
 if (isset($_POST['register'])) {
     $name = $_POST['name'];
@@ -68,6 +68,7 @@ if (isset($_POST['login'])) {
 
 // Request for blood receiving
 if (isset($_POST['request_submit'])) {
+    $receiver_email = $_POST['receiver_email'];
     $receiver_cnic = $_POST['receiver_cnic'];
     $receiver_name = $_POST['receiver_name'];
     $receiver_phone_no = $_POST['receiver_phone_no'];
@@ -80,16 +81,45 @@ if (isset($_POST['request_submit'])) {
     $sql = "INSERT INTO `receivers` (`cnic`, `name`, `phone_no`, `abo_type`, `rh_system`, `address`, `bottle_qty`, `status`) VALUES ('$receiver_cnic', '$receiver_name', '$receiver_phone_no', '$receiver_abo_type', '$receiver_rh_system', '$receiver_address', '$receiver_bottle_qty', '$receiver_status' )";
     if ($conn->query($sql) === TRUE) {
         $_SESSION['receiver_request'] = "Your request has been submitted, We will contact you soon once admin approve your request.";
-        $to = "email@gmail.com";
-        $from = "Receiver";
-        $subject = "Need blood";
-        $title = "Mail";
+        // $to = "email@gmail.com";
+        // $from = "Receiver";
+        // $subject = "Need blood";
+        // $title = "Mail";
+        // foreach ($_POST as $key => $value) {
+        //     $message_body .= "$key: $value\n";
+        // }
+        // $headers = "From: $from" . "\r\n" . 'Reply-To: ' . $to . "\r\n";
+        // mail($to, $subject, $message_body, $headers);
+        $mail->setFrom('ashar.muhammad74@gmail.com', 'AsharMuhammad');
+        $mail->addReplyTo('ashar.muhammad74@gmail.com', 'AsharMuhammad');
+
+        // Add a recipient 
+        $mail->addAddress($receiver_email);
+
+        //$mail->addCC('cc@example.com'); 
+        //$mail->addBCC('bcc@example.com'); 
+
+        // Set email format to HTML 
+        $mail->isHTML(true);
+
+        // Mail subject 
+        $mail->Subject = 'Need blood';
+
+        // Mail body content
+        $bodyContent = '<h1>I need blood, here i have entered the information</h1>';
         foreach ($_POST as $key => $value) {
-            $message_body .= "$key: $value\n";
+            $bodyContent .= "$key: $value\n";
         }
-        $headers = "From: $from" . "\r\n" . 'Reply-To: ' . $to . "\r\n";
-        mail($to, $subject, $message_body, $headers);
-        header('location:../request.php');
+        $mail->Body    = $bodyContent;
+
+        // Send email 
+        if (!$mail->send()) {
+            echo 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
+        } else {
+            echo 'Message has been sent.';
+            header('location:../request.php');
+        }
+        
     } else {
         $_SESSION['redceiver_error'] = "There is an error while sending your request, please check your form again";
         header('location:../request.php');
@@ -135,6 +165,7 @@ if (isset($_POST['check_avail'])) {
     $org = [];
     $org_detail = [];
     $data = [];
+    $name;
     $receiver_rh_system = $_POST['receiver_rh_system'];
     $receiver_abo_type = $_POST['receiver_abo_type'];
     $query = "SELECT * FROM `donars` WHERE `rh_system` = '$receiver_rh_system' AND `abo_type` = '$receiver_abo_type' AND `status` = 'Approved'";
@@ -147,17 +178,17 @@ if (isset($_POST['check_avail'])) {
     }
     $query_org = "SELECT *, count(`org_id`) AS `count` FROM `blood_types` WHERE `rh_system` = '$receiver_rh_system' AND `abo_type` = '$receiver_abo_type' GROUP BY `org_id`";
     $result_org = $conn->query($query_org);
-    if (mysqli_num_rows($result_org) > 0) {
-        while ($row = $result_org->fetch_assoc()) {
-            $row_id =  $row['org_id'];
-            $query_detail = "SELECT `name` FROM `organizations` WHERE `id` = $row_id";
-            $result_detail = $conn->query($query_detail);
-            $org_detail[] = $result_org->fetch_assoc();
-            array_push($org, $org_detail);
-            // $org[] = $row;
-        }
-        $data['org'] = $org;
+    while ($row = $result_org->fetch_assoc()) {
+        $row_id =  $row['org_id'];
+        $count =  $row['count'];
+        $query_detail = "SELECT `name` FROM `organizations` WHERE `id` = $row_id";
+        $result_detail = $conn->query($query_detail);
+        $org_detail = $result_detail->fetch_assoc();
+        $name = $org_detail['name'];
+        $org[] = array('org' => $row, 'name' => $name);
     }
+    $data['org'] = $org;
+
     if ($data) {
         print_r(json_encode($data));
     } else {

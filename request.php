@@ -51,6 +51,9 @@ include('./partials/html_header.php');
                         <form method="POST" action="./database/process.php">
                             <div class="row g-3">
                                 <div class="col-12 col-sm-6">
+                                    <input type="email" class="form-control bg-white border-0" name="receiver_email" placeholder="Email" style="height: 55px;" required>
+                                </div>
+                                <div class="col-12 col-sm-6">
                                     <input type="text" class="form-control bg-white border-0" name="receiver_cnic" placeholder="CNIC" pattern="[0-9]{5}-[0-9]{7}-{0-9}{1}" style="height: 55px;" required>
                                 </div>
                                 <div class="col-12 col-sm-6">
@@ -215,16 +218,13 @@ include('./partials/html_header.php');
                     'receiver_abo_type': receiver_abo_type,
                 },
                 success: function(data){
-                    console.log(data);
                     $(div_avail).removeClass('d-none');
                     $(data['donars']).each(function(index, element){
-                        console.log(element);
-                        var option = `<option value=`+element['id']+`>`+element['name']+`)</option>`;
+                        var option = `<option value=`+element['id']+`>`+element['name']+`</option>`;
                         $(div_avail_child).append(option);
                     });
                     $(data['org']).each(function(index, element){
-                        console.log(element);
-                        var option = `<option value=`+element['id']+`>`+element['name']+`(count: `+element['count']+`)</option>`;
+                        var option = `<option value=`+element['org']['id']+`>`+element['name']+`(count: `+element['org']['count']+`)</option>`;
                         $(div_avail_child).append(option);
                     });
                 }
