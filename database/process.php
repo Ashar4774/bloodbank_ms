@@ -76,6 +76,7 @@ if (isset($_POST['request_submit'])) {
     $receiver_rh_system = $_POST['receiver_rh_system'];
     $receiver_address = $_POST['receiver_address'];
     $receiver_bottle_qty = $_POST['receiver_bottle_qty'];
+    $avail_user = ($_POST['avail_user'] != '') ? $_POST['avail_user'] : '';
     $receiver_status = "pending";
 
     $sql = "INSERT INTO `receivers` (`cnic`, `name`, `phone_no`, `abo_type`, `rh_system`, `address`, `bottle_qty`, `status`) VALUES ('$receiver_cnic', '$receiver_name', '$receiver_phone_no', '$receiver_abo_type', '$receiver_rh_system', '$receiver_address', '$receiver_bottle_qty', '$receiver_status' )";
@@ -114,14 +115,14 @@ if (isset($_POST['request_submit'])) {
 
         // Send email 
         if (!$mail->send()) {
-            echo 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
+            $_SESSION['receiver_error'] = 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
         } else {
-            echo 'Message has been sent.';
+            $_SESSION['receiver_request'] = 'Message has been sent.';
             header('location:../request.php');
         }
         
     } else {
-        $_SESSION['redceiver_error'] = "There is an error while sending your request, please check your form again";
+        $_SESSION['receiver_error'] = "There is an error while sending your request, please check your form again";
         header('location:../request.php');
         // echo "Error" . $sql . "<br>" . $conn->error;
     }
@@ -129,6 +130,7 @@ if (isset($_POST['request_submit'])) {
 
 // Request for blood donation
 if (isset($_POST['donar_submit'])) {
+    $donar_email = $_POST['donar_email'];
     $donar_cnic = $_POST['donar_cnic'];
     $donar_name = $_POST['donar_name'];
     $donar_phone_no = $_POST['donar_phone_no'];
@@ -142,16 +144,44 @@ if (isset($_POST['donar_submit'])) {
     $sql = "INSERT INTO `donars`(`cnic` , `name`, `address`, `phone_no`, `abo_type`, `rh_system`, `status`) VALUES ('" . $donar_cnic . "', '" . $donar_name . "','" . $donar_address . "','" . $donar_phone_no . "','" . $donar_abo_type . "','" . $donar_rh_system . "', '" . $donar_status . "')";
     if ($conn->query($sql) === TRUE) {
         $_SESSION['donar_request'] = "Your donation request has been submitted, We will contact you soon once admin approve your request.";
-        $to = "email@gmail.com";
-        $from = "Donar";
-        $subject = "Become a donar";
-        $title = "Mail";
+        // $to = "email@gmail.com";
+        // $from = "Donar";
+        // $subject = "Become a donar";
+        // $title = "Mail";
+        // foreach ($_POST as $key => $value) {
+        //     $message_body .= "$key: $value\n";
+        // }
+        // $headers = "From: $from" . "\r\n" . 'Reply-To: ' . $to . "\r\n";
+        // mail($to, $subject, $message_body, $headers);
+        $mail->setFrom('ashar.muhammad74@gmail.com', 'AsharMuhammad');
+        $mail->addReplyTo('ashar.muhammad74@gmail.com', 'AsharMuhammad');
+
+        // Add a recipient 
+        $mail->addAddress($donar_email);
+
+        //$mail->addCC('cc@example.com'); 
+        //$mail->addBCC('bcc@example.com'); 
+
+        // Set email format to HTML 
+        $mail->isHTML(true);
+
+        // Mail subject 
+        $mail->Subject = 'Need blood';
+
+        // Mail body content
+        $bodyContent = '<h1>I want to donate blood, here i have entered the information</h1>';
         foreach ($_POST as $key => $value) {
-            $message_body .= "$key: $value\n";
+            $bodyContent .= "$key: $value\n";
         }
-        $headers = "From: $from" . "\r\n" . 'Reply-To: ' . $to . "\r\n";
-        mail($to, $subject, $message_body, $headers);
-        header('location:../request.php');
+        $mail->Body    = $bodyContent;
+
+        // Send email 
+        if (!$mail->send()) {
+            echo 'Message could not be sent. Mailer Error: ' . $mail->ErrorInfo;
+        } else {
+            echo 'Message has been sent.';
+            header('location:../request.php');
+        }
     } else {
         $_SESSION['donar_error'] = "There is an error while sending your request, please check your form again";
         header('location:../request.php');
