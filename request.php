@@ -40,7 +40,13 @@ include('./partials/html_header.php');
                             echo '</div>';
                             unset($_SESSION['receiver_request']);
                         }
-                        if (isset($_SESSION['redceiver_error'])) {
+                        if (isset($_SESSION['receiver_request'])) {
+                            echo '<div class="alert alert-success mb-0" role="alert">';
+                            echo    $_SESSION['receiver_request'];
+                            echo '</div>';
+                            unset($_SESSION['receiver_request']);
+                        }
+                        if (isset($_SESSION['receiver_error'])) {
                             echo '<div class="alert alert-danger mb-0" role="alert">';
                             echo    $_SESSION['redceiver_error'];
                             echo '</div>';
@@ -50,7 +56,7 @@ include('./partials/html_header.php');
                         <h1 class="mb-4">Request for blood</h1>
                         <form method="POST" action="./database/process.php">
                             <div class="row g-3">
-                                <div class="col-12 col-sm-6">
+                                <div class="col-12 col-sm-12">
                                     <input type="email" class="form-control bg-white border-0" name="receiver_email" placeholder="Email" style="height: 55px;" required>
                                 </div>
                                 <div class="col-12 col-sm-6">
@@ -120,6 +126,9 @@ include('./partials/html_header.php');
                         <h1 class="mb-4">Become a donar</h1>
                         <form method="POST" action="./database/process.php">
                             <div class="row g-3">
+                                <div class="col-12 col-sm-12">
+                                    <input type="email" class="form-control bg-white border-0" name="donar_email" placeholder="Email" style="height: 55px;" required>
+                                </div>
                                 <div class="col-12 col-sm-6">
                                     <input type="text" class="form-control bg-white border-0" name="donar_cnic" placeholder="CNIC" pattern="[0-9]{5}-[0-9]{7}-{0-9}{1}" style="height: 55px;" required>
                                 </div>
